@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Customers - Shop Management{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-6">
+        <h2>Customers</h2>
+    </div>
+    <div class="col-md-6">
+        <form method="GET" class="d-flex">
+            <input type="text" name="search" class="form-control me-2" placeholder="Search customers..." value="">
+            <button type="submit" class="btn btn-outline-primary">Search</button>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for customer in customers %}
+                    <tr>
+                        <td>{{ customer.id }}</td>
+                        <td>{{ customer.username }}</td>
+                        <td>
+                            <span class="badge bg-{{ 'primary' if customer.role == 'customer' else 'warning' if customer.role == 'staff' else 'danger' }}">
+                                {{ customer.role|title }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('profile', id=customer.id) }}" class="btn btn-sm btn-outline-primary">View Profile</a>
+                            {% if session.role == 'admin' %}
+                            <a href="{{ url_for('admin_user', id=customer.id) }}" class="btn btn-sm btn-outline-secondary">Admin View</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% if not customers %}
+<div class="alert alert-info text-center">
+    No customers found.
+</div>
+{% endif %}
+{% endblock %}

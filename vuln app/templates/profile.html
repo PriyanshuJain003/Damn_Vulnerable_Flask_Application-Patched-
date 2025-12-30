@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - Shop Management{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>Profile: {{ profile_user.username }}</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>ID:</strong></td>
+                                <td>{{ profile_user.id }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Username:</strong></td>
+                                <td>{{ profile_user.username }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Role:</strong></td>
+                                <td>
+                                    <span class="badge bg-{{ 'primary' if profile_user.role == 'customer' else 'warning' if profile_user.role == 'staff' else 'danger' }}">
+                                        {{ profile_user.role|title }}
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Recent Orders:</h6>
+                        {% if session.role == 'admin' or profile_user.id == current_user.user_id %}
+                        <a href="{{ url_for('orders', user_id=profile_user.id) }}" class="btn btn-sm btn-outline-primary">View All Orders</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if session.role == 'admin' %}
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="alert alert-warning">
+            <strong>Admin Note:</strong> This profile accessed via IDOR - no ownership checks!
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

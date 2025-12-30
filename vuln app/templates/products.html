@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Products - Shop Management{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-6">
+        <h2>Products</h2>
+    </div>
+    <div class="col-md-6">
+        <form method="GET" class="d-flex">
+            <input type="text" name="search" class="form-control me-2" placeholder="Search products..." value="">
+            <button type="submit" class="btn btn-outline-primary">Search</button>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    {% for product in products %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text">{{ product.description }}</p>
+                <p class="fw-bold text-success fs-4">₹{{ "%.2f"|format(product.price) }}</p>
+                <span class="badge bg-{{ 'success' if product.stock > 0 else 'danger' }}">
+                    Stock: {{ product.stock }}
+                </span>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if not products %}
+<div class="alert alert-warning text-center">
+    No products found matching your search.
+</div>
+{% endif %}
+{% endblock %}
