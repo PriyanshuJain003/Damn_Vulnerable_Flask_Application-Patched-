@@ -86,6 +86,10 @@ python app.py
 Access:
 - http://127.0.0.1:5000/login
 - http://127.0.0.1:5000/admin
+- Credentials:
+  admin/admin123
+  staff1/staff123
+  user1/user123
 
 ---
 
